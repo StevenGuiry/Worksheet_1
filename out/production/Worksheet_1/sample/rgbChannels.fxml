@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="450.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.RGBChannelController">
+  <tabs>
+    <Tab fx:id="redChannel" text="Red Channel">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="redImage" fitHeight="290.0" fitWidth="420.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="greenChannel" text="Green Channel">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="greenImage" fitHeight="290.0" fitWidth="420.0" layoutX="15.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab fx:id="blueChannel" text="Blue Channel">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="blueImage" fitHeight="290.0" fitWidth="420.0" layoutX="15.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
+               </children></AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>
