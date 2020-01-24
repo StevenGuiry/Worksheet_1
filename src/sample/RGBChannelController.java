@@ -1,100 +1,78 @@
 package sample;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 
 public class RGBChannelController {
 
     @FXML
-    private ImageView greenImage,redImage,blueImage;
+    private Tab redChannel, greenChannel, blueChannel;
+    @FXML
+    private ImageView greenImage, redImage, blueImage;
+    public Image rgbImg;
 
-    public void initialize () {
-
+    @SuppressWarnings("Duplicates")
+    public void initialize() {
         if (MainGUIController.file != null) {
-            BufferedImage bimgr,bimgg,bimgb;
-            //read image
-            try {
-                bimgr = ImageIO.read(MainGUIController.file);
-                bimgg = ImageIO.read(MainGUIController.file);
-                bimgb = ImageIO.read(MainGUIController.file);
-                redImage.setImage(makeRed(bimgr));
-                greenImage.setImage(makeGreen(bimgg));
-                blueImage.setImage(makeBlue(bimgb));
-            } catch (IOException e) {
-                System.err.println("IO Exception");
-            }
-        } else {
-            System.err.println("No Image Selected");
-        }
-    }
+            String path = MainGUIController.file.toURI().toString();
+            rgbImg = new Image(path);
 
-    public static Image makeRed(BufferedImage bimg) {
-        int width = bimg.getWidth();
-        int height = bimg.getHeight();
+            PixelReader pixelReader = rgbImg.getPixelReader();
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int pixel = bimg.getRGB(x, y);
+            int width = (int) rgbImg.getWidth();
+            int height = (int) rgbImg.getHeight();
 
-                int alpha = (pixel >> 24) & 0xff;
-                int red = (pixel >> 16) & 0xff;
+            WritableImage writeImg = new WritableImage(width, height);
 
-                //set new RGB, keeping the red value and setting green
-                //and blue as 0.
-                pixel = (alpha << 24) | (red << 16) | (0);
+            if (redChannel.isSelected()) {
+                for (int x = 0; x < width; x++) {
+                    for (int y = 0; y < height; y++) {
+                        int pixel = pixelReader.getArgb(x, y);
 
-                bimg.setRGB(x, y, pixel);
-            }
-        }
-        Image rImage = SwingFXUtils.toFXImage(bimg, null);
-        return rImage;
-    }
+                        int alpha = (pixel >> 24) & 0xff;
+                        int red = (pixel >> 16) & 0xff;
 
-    public static Image makeGreen(BufferedImage bimg) {
-                int width = bimg.getWidth();
-                int height = bimg.getHeight();
-
-                for (int y = 0; y < height; y++) {
-                    for (int x = 0; x < width;x++) {
-                        int pixel = bimg.getRGB(x,y);
-
-                        int a = (pixel >> 24) & 0xFF;
-                        int g = (pixel >> 8) & 0xFF;
-
-                        pixel = (a<<24) | (g<<8) | (0);
-
-                        bimg.setRGB(x,y,pixel);
+                        pixel = (alpha << 24) | (red << 16) | (0);                                                      //set new RGB, keeping the red value and setting green and blue as 0.
+                        writeImg.getPixelWriter().setArgb(x, y, pixel);
                     }
                 }
-                Image gImage = SwingFXUtils.toFXImage(bimg,null);
-                return gImage;
-    }
+                redImage.setImage(writeImg);
+                System.out.println("Red");
+            } else if (greenChannel.isSelected()) {
+                for (int x = 0; x < width; x++) {
+                    for (int y = 0; y < height; y++) {
+                        int pixel = pixelReader.getArgb(x, y);
 
-    public static Image makeBlue(BufferedImage bimg) {
-        int width = bimg.getWidth();
-        int height = bimg.getHeight();
+                        int alpha = (pixel >> 24) & 0xFF;
+                        int green = (pixel >> 8) & 0xFF;
 
+                        pixel = (alpha << 24) | (green << 8) | (0);
+                        writeImg.getPixelWriter().setArgb(x, y, pixel);
+                    }
+                }
+                greenImage.setImage(writeImg);
+                System.out.println("Green");
+            } else if (blueChannel.isSelected()) {
+                for (int x = 0; x < width; x++) {
+                    for (int y = 0; y < height; y++) {
+                        int pixel = pixelReader.getArgb(x, y);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width;x++) {
-                int pixel = bimg.getRGB(x,y);
+                        int alpha = (pixel >> 24) & 0xFF;
+                        int blue = (pixel) & 0xFF;
 
-                int a = (pixel >> 24) & 0xFF;
-                int b = (pixel) & 0xFF;
-
-                pixel = (a<<24) | (0) | b;
-
-                bimg.setRGB(x,y,pixel);
+                        pixel = (alpha << 24) | (0) | blue;
+                        writeImg.getPixelWriter().setArgb(x, y, pixel);
+                    }
+                }
+                blueImage.setImage(writeImg);
+                System.out.println("Blue");
             }
+        } else {
+            System.out.println("No Image Selected");
         }
-        Image bImage = SwingFXUtils.toFXImage(bimg,null);
-        return bImage;
-
     }
 }
